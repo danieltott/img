@@ -1,4 +1,6 @@
 img
 ===
 
-Various images found around teh web
+Various images found around the web
+
+Pull requests welcome! (:
