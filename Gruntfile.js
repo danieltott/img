@@ -77,7 +77,7 @@ module.exports = function(grunt) {
                     pretty: true
                 },
                 files: [
-                    {dest: 'imageList.json', src: ['images/**/*']}, filter: 'isFile'}
+                    {dest: 'imagelist.json', src: ['images/**/*'], filter: 'isFile'}
                 ]
             },
         }
