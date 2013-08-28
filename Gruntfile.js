@@ -95,9 +95,7 @@ module.exports = function(grunt) {
     // Default task(s).
 
 
-    grunt.registerTask('build', [
-
-    ]);
+    grunt.registerTask('build', ['fileindex']);
 
 
 
