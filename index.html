@@ -6,6 +6,7 @@
         <style>
         ul {
             list-style: none;
+            display: none;
         }
         li {
             padding: 10px;
@@ -19,20 +20,55 @@
         </style>
     </head>
     <body>
-        <ul class="list"></ul>
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <div class="images"></div>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
         <script type="text/javascript">
             var list = $('.list');
+            var images = {
+                nofolder: []
+            };
+            $(document).on('click', 'button', function() {
+                $(this).closest('div').find('ul').toggle();
+            });
             $.get('imagelist.json', function(data) {
-
+                console.debug(data);
                 $.each(data, function(i, v) {
+                    var temp = v.substr(7),
+                        temparray = temp.split('/');
 
-                    var li = $('<li></li>').appendTo(list);
-                    $('<div><input readonly value="' + window.location.href + v + '"></div>').appendTo(li);
-                    $('<div><img src="' + v + '"></div>').appendTo(li);
+                    if(temparray.length === 1) {
+                        images.nofolder.push(temparray[0]);
+                    }
+                    else {
+                        if(!images[temparray[0]]) {
+                            images[temparray[0]] = [];
+                        }
+                        images[temparray[0]].push(temparray[1]);
+                    }
+                    // var li = $('<li></li>').appendTo(list);
+                    // $('<div><input readonly value="' + window.location.href + v + '"></div>').appendTo(li);
+                    // $('<div><img src="' + v + '"></div>').appendTo(li);
 
                 });
+                console.debug(images);
 
+                $.each(images, function(k, v) {
+                    var div = $('<div><button>' + k + '</button></div>').appendTo($('.images')),
+                        ul = $('<ul></ul>').appendTo(div);
+                    $.each(v, function(i, image) {
+                        if(k == 'nofolder') {
+                            var li = $('<li></li>').appendTo(ul);
+                            $('<div><input readonly value="' + window.location.href + 'images/' + image + '"></div>').appendTo(li);
+                            $('<div><img src="images/' + image + '"></div>').appendTo(li);
+                        }
+                        else {
+                            var li = $('<li></li>').appendTo(ul);
+                            $('<div><input readonly value="' + window.location.href + 'images/' + k + '/' + image + '"></div>').appendTo(li);
+                            $('<div><img src="images/' + k + '/' + image + '"></div>').appendTo(li);
+                        }
+
+                    })
+                });
 
             });
         </script>
